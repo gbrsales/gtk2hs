@@ -256,6 +256,11 @@ module Graphics.Rendering.Cairo (
 #endif
 #endif
 
+#ifdef CAIRO_HAS_QUARTZ_SURFACE
+  -- ** Quartz surfaces
+  , withQuartzSurfaceForCGContext
+#endif
+
 #if CAIRO_CHECK_VERSION(1,10,0)
   -- * Regions
   , regionCreate
@@ -2373,6 +2378,26 @@ svgSurfaceGetDocumentUnit s = liftIO $ Internal.svgSurfaceGetDocumentUnit s
 #endif
 #endif
 
+
+#ifdef CAIRO_HAS_QUARTZ_SURFACE
+-- | Creates a SVG surface for the specified CGContext.
+--
+withQuartzSurfaceForCGContext ::
+      Ptr ()  -- ^ pointer to CGContext
+   -> Int     -- ^ width of the surface
+   -> Int     -- ^ height of the surface
+   -> (Surface -> IO a) -- ^ an action that may use the surface. The surface is
+                        -- only valid within in this action.
+   -> IO a
+withQuartzSurfaceForCGContext cgContext width height f = do
+  surface <- Internal.quartzSurfaceCreateForCGContext cgContext width height
+  ret <- f surface
+  Internal.surfaceDestroy surface
+  return ret
+
+#endif
+
+
 #if CAIRO_CHECK_VERSION(1,10,0)
 
 -- | Allocates a new empty region object.
@@ -2585,4 +2610,3 @@ version = Internal.version
 --
 versionString :: String
 versionString = Internal.versionString
-
