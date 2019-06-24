@@ -51,6 +51,9 @@ Flag cairo_ps
 Flag cairo_svg
   Description: Build the Scalable Vector Graphics (SVG) backend of Cairo.
 
+Flag cairo_quartz
+  Description: Build the Apple OS X Quartz backend of Cairo.
+
 custom-setup
   setup-depends: base >= 4.6,
                  Cabal >= 1.24 && < 3.3,
@@ -80,6 +83,7 @@ Library
                           Graphics.Rendering.Cairo.Internal.Utilities
                           Graphics.Rendering.Cairo.Internal.Surfaces.PDF
                           Graphics.Rendering.Cairo.Internal.Surfaces.PS
+                          Graphics.Rendering.Cairo.Internal.Surfaces.Quartz
                           Graphics.Rendering.Cairo.Internal.Surfaces.SVG
                           Graphics.Rendering.Cairo.Internal.Region
         default-language:   Haskell98
@@ -93,5 +97,7 @@ Library
           pkgconfig-depends: cairo-ps
         if flag(cairo_svg)
           pkgconfig-depends: cairo-svg
+        if flag(cairo_quartz)
+          pkgconfig-depends: cairo-quartz
         if os(darwin) || os(freebsd)
           cpp-options: -D__attribute__(A)= -D_Nullable= -D_Nonnull= -D_Noreturn=
