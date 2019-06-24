@@ -82,6 +82,7 @@ Library
                           Graphics.Rendering.Cairo.Internal.Utilities
                           Graphics.Rendering.Cairo.Internal.Surfaces.PDF
                           Graphics.Rendering.Cairo.Internal.Surfaces.PS
+                          Graphics.Rendering.Cairo.Internal.Surfaces.Quartz
                           Graphics.Rendering.Cairo.Internal.Surfaces.SVG
                           Graphics.Rendering.Cairo.Internal.Region
         default-language:   Haskell98
