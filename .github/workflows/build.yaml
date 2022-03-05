@@ -1,0 +1,45 @@
+on:
+  push:
+  schedule:
+    - cron: '30 2 * * 0'
+name: build
+jobs:
+  ci:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        ghc: ['8.10', '9.0']
+        os: [ubuntu-latest, macOS-latest]
+
+    name: Build Package
+    steps:
+      - name: Install Ubuntu system dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo -s apt-get update
+          sudo -s apt-get install --yes libcairo2-dev libgtk-3-dev libpango1.0-dev
+
+      - name: Install macOS system dependencies
+        if: matrix.os == 'macOS-latest'
+        run: brew install cairo gtk+3 pango
+
+      - uses: actions/checkout@v2
+
+      - name: Setup Haskell
+        uses: haskell/actions/setup@v1
+        with:
+          ghc-version: ${{ matrix.ghc }}
+          cabal-version: ${{ matrix.cabal }}
+
+      - name: Build libraries
+        run: cabal build all
+
+      - name: Check if Quartz support was compiled
+        if: matrix.os == 'macOS-latest'
+        run: |
+          cat >Test.hs <<EOF
+          module Main where
+          import Graphics.Rendering.Cairo
+          main = withQuartzSurfaceForCGContext undefined 100 100 (const $ putStrLn "OK")
+          EOF
+          cabal exec ghc -- -o test Test.hs
