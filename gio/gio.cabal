@@ -39,8 +39,8 @@ Source-Repository head
   subdir:       gio
 
 custom-setup
-  setup-depends: base >= 4.6 && < 5,
-                 Cabal >= 2.0 && < 3.11,
+  setup-depends: base >= 4.6,
+                 Cabal >= 2.0,
                  gtk2hs-buildtools >= 0.13.2.0 && < 0.14
 
 Library
