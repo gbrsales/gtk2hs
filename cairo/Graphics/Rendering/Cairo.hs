@@ -2380,7 +2380,7 @@ svgSurfaceGetDocumentUnit s = liftIO $ Internal.svgSurfaceGetDocumentUnit s
 
 
 #ifdef CAIRO_HAS_QUARTZ_SURFACE
--- | Creates a SVG surface for the specified CGContext.
+-- | Creates a Quartz surface for the specified CGContext.
 --
 withQuartzSurfaceForCGContext ::
       Ptr ()  -- ^ pointer to CGContext
