@@ -60,9 +60,7 @@ Library
         build-depends:  base >= 4.8 && < 5,
                         utf8-string >= 0.2 && < 1.1,
                         text >= 1.0.0.0 && < 2.1,
-                        array < 0.6,
-                        bytestring < 0.12,
-                        mtl < 2.4
+                        bytestring, mtl, array
         exposed-modules:  Graphics.Rendering.Cairo
                           Graphics.Rendering.Cairo.Matrix
                           Graphics.Rendering.Cairo.Types
