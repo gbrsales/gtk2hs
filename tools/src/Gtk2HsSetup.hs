@@ -59,6 +59,9 @@ import Distribution.Simple.Setup (CopyFlags(..), InstallFlags(..), CopyDest(..),
 #if MIN_VERSION_Cabal(2,0,0)
 import Distribution.Simple.BuildPaths ( autogenPackageModulesDir )
 #endif
+#if MIN_VERSION_Cabal(3,6,0)
+import Distribution.Utils.Path
+#endif
 import Distribution.Simple.Install ( install )
 import Distribution.Simple.Register ( generateRegistrationInfo, registerPackage )
 import Distribution.Text ( simpleParse, display )
@@ -82,7 +85,7 @@ import Distribution.Simple.Compiler (compilerVersion)
 import qualified Distribution.Compat.Graph as Graph
 #if MIN_VERSION_Cabal(3,6,0)
 import Distribution.Utils.Path (getSymbolicPath)
-#endif 
+#endif
 
 import Control.Applicative ((<$>))
 
@@ -469,13 +472,12 @@ fixDeps pd@PD.PackageDescription {
               PD.hsSourceDirs = srcDirs,
               PD.otherModules = othMods
             }}} = do
-  let toPath = 
+  let findModule m = findFileWithExtension [".chs.pp",".chs"]
 #if MIN_VERSION_Cabal(3,6,0)
-        getSymbolicPath
-#else 
-        id 
-#endif 
-  let findModule m = findFileWithExtension [".chs.pp",".chs"] (map toPath srcDirs)
+                       (map getSymbolicPath srcDirs)
+#else
+                       srcDirs
+#endif
                        (joinPath (components m))
   mExpFiles <- mapM findModule expMods
   mOthFiles <- mapM findModule othMods
