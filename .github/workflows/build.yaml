@@ -24,6 +24,7 @@ jobs:
           cabal_files="$(find . -name '*.cabal')"
           failed=0
           while read cabal_file; do
+            [ "$cabal_file" = "./tools/apiGen/ApiGen.cabal" ] && continue
             "$HOME/.cabal/bin/packdeps" "$cabal_file" || failed=1
           done <<EOF
           $cabal_files
