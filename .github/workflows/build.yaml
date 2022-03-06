@@ -4,6 +4,32 @@ on:
     - cron: '30 2 * * 0'
 name: build
 jobs:
+  deps:
+    runs-on: ubuntu-latest
+
+    name: Check for new versions of dependencies
+    steps:
+      - name: Setup Haskell
+        uses: haskell/actions/setup@v1
+        with:
+          ghc-version: '8.10'
+
+      - name: Install packdeps
+        run: cabal install packdeps
+
+      - uses: actions/checkout@v2
+
+      - name: Run packdeps
+        run: |
+          cabal_files="$(find . -name '*.cabal')"
+          failed=0
+          while read cabal_file; do
+            "$HOME/.cabal/bin/packdeps" "$cabal_file" || failed=1
+          done <<EOF
+          $cabal_files
+          EOF
+          [ $failed -eq 0 ] || exit 1
+
   ci:
     runs-on: ${{ matrix.os }}
     strategy:
