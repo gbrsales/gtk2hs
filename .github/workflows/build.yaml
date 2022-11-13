@@ -10,14 +10,14 @@ jobs:
     name: Check for new versions of dependencies
     steps:
       - name: Setup Haskell
-        uses: haskell/actions/setup@v1
+        uses: haskell/actions/setup@v2
         with:
           ghc-version: '8.10'
 
       - name: Install packdeps
         run: cabal install packdeps
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Run packdeps
         run: |
@@ -50,10 +50,10 @@ jobs:
         if: matrix.os == 'macOS-latest'
         run: brew install cairo gtk+3 pango
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Haskell
-        uses: haskell/actions/setup@v1
+        uses: haskell/actions/setup@v2
         with:
           ghc-version: ${{ matrix.ghc }}
           cabal-version: ${{ matrix.cabal }}
