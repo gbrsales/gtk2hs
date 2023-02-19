@@ -48,7 +48,7 @@ jobs:
 
       - name: Install macOS system dependencies
         if: matrix.os == 'macOS-latest'
-        run: brew install cairo gtk+3 pango
+        run: brew install cairo gtk+3 pango pkg-config
 
       - uses: actions/checkout@v3
 
