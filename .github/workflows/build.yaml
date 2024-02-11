@@ -9,26 +9,19 @@ jobs:
 
     name: Check for new versions of dependencies
     steps:
-      - name: Setup Haskell
-        uses: haskell/actions/setup@v2
-        with:
-          ghc-version: '8.10'
-
-      - name: Install packdeps
-        run: cabal install packdeps
-
       - uses: actions/checkout@v3
+      - uses: haskell-actions/setup@v2
 
-      - name: Run packdeps
+      - name: Check dependencies
         run: |
-          cabal_files="$(find . -name '*.cabal')"
           failed=0
-          while read cabal_file; do
-            [ "$cabal_file" = "./tools/apiGen/ApiGen.cabal" ] && continue
-            "$HOME/.cabal/bin/packdeps" "$cabal_file" || failed=1
-          done <<EOF
-          $cabal_files
-          EOF
+          for p in *; do
+            [ -f "$p/$p.cabal" ] || continue
+            cd "$p"
+            echo "Testing $p dependencies."
+            cabal outdated --exit-code || failed=1
+            cd ..
+          done
           [ $failed -eq 0 ] || exit 1
 
   ci:
