@@ -9,7 +9,7 @@ jobs:
 
     name: Check for new versions of dependencies
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: haskell-actions/setup@v2
 
       - name: Check dependencies
@@ -43,7 +43,7 @@ jobs:
         if: matrix.os == 'macOS-latest'
         run: brew install cairo gtk+3 pango pkg-config
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Setup Haskell
         uses: haskell-actions/setup@v2
