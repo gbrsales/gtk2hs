@@ -29,7 +29,7 @@ jobs:
     strategy:
       matrix:
         ghc: ['8.10', '9.0', '9.2', '9.4', '9.6']
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest, macOS-13]
 
     name: Build Package
     steps:
@@ -40,7 +40,7 @@ jobs:
           sudo -s apt-get install --yes libcairo2-dev libgtk-3-dev libpango1.0-dev
 
       - name: Install macOS system dependencies
-        if: matrix.os == 'macOS-latest'
+        if: matrix.os == 'macOS-13'
         run: brew install cairo gtk+3 pango pkg-config
 
       - uses: actions/checkout@v4
@@ -55,7 +55,7 @@ jobs:
         run: cabal build all
 
       - name: Check if Quartz support was compiled
-        if: matrix.os == 'macOS-latest'
+        if: matrix.os == 'macOS-13'
         run: |
           cat >Test.hs <<EOF
           module Main where
