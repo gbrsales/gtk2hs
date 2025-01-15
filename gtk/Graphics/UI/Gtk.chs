@@ -613,7 +613,7 @@ import Graphics.UI.Gtk.Builder
 -- pango modules
 import Graphics.Rendering.Pango.Context
 import Graphics.Rendering.Pango.Markup
-import Graphics.Rendering.Pango.Layout
+import Graphics.Rendering.Pango.Layout hiding (WrapNone)
 import Graphics.Rendering.Pango.Rendering
 import Graphics.Rendering.Pango.Font
 import Graphics.Rendering.Pango.Enums
